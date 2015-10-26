@@ -1,0 +1,4 @@
+services:
+    steam_auth:
+        class: CSGOTalk\siteBundle\Service\SteamAuth
+        arguments: []

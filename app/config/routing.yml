@@ -1,0 +1,7 @@
+csgo_talksite:
+    resource: "@CSGOTalksiteBundle/Resources/config/routing.yml"
+    prefix:   /
+
+oc_platform:
+    resource: "@OCPlatformBundle/Resources/config/routing.yml"
+    prefix:   /platform

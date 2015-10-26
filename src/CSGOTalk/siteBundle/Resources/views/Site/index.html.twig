@@ -1,0 +1,65 @@
+{% extends "CSGOTalksiteBundle::layout.html.twig" %}
+
+{% block title %}
+    {{ parent() }}
+{% endblock %}
+
+{% block csgotalk_body %}
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="{{ path('csgo_talksite_homepage') }}">
+                    <img src="{{ asset('bundles/csgotalksite/images/logo.png') }}"></a>
+            </div>
+
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                        <li><a href="{{ path('csgo_talksite_threads') }}">Let's Talk</a></li>
+                    </li>
+                </ul>
+
+                <form class="navbar-form navbar-left">
+                    <a href="{{ button | raw }}"><img src="https://steamcommunity-a.akamaihd.net/public/images/signinthroughsteam/sits_small.png"></a>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <div class="wrap1">
+        <img src="{{ asset('bundles/csgotalksite/images/1.jpg') }}">
+        <div class="text_wrap">
+            We talk, we bet, we win.
+        </div>
+    </div>
+
+    <div class="wrap2">
+        <div class="text_wrap">
+            Select your match</br> Leave your prediction</br> Talk about it.
+        </div>
+    </div>
+
+    <div class="wrap3">
+        <img src="{{ asset('bundles/csgotalksite/images/3.jpg') }}">
+    </div>
+    
+    <script type="text/javascript">
+        $(window).scroll(function()
+        {
+            var windowY = $(window).height();
+            var scrolledY = $(window).scrollTop();
+
+            if (scrolledY > windowY) 
+            {
+                $(".wrap1 img").attr("src","{{ asset('bundles/csgotalksite/images/3.jpg') }}");
+                $(".wrap1 .text_wrap").html("Here is the place where you're able to vote, talk</br> and share opinions about the next CS:GO Professionnal matchs.");
+                $(".wrap1 .text_wrap").css("left","20%");
+            }
+            else if(scrolledY < windowY) 
+            {
+                $(".wrap1 img").attr("src","{{ asset('bundles/csgotalksite/images/1.jpg') }}");
+                $(".wrap1 .text_wrap").text("We talk, we bet, we win.");
+            }
+        });
+    </script>
+{% endblock %}
