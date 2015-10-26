@@ -1,11 +1,11 @@
 csgo_talksite_homepage:
-    path:     /home
+    path:    /home
     defaults: { _controller: CSGOTalksiteBundle:Site:index }
 
 csgo_talksite_threads:
-    path:     /threads
+    path:    /threads
     defaults: { _controller: CSGOTalksiteBundle:Site:threads }
 
 csgo_talksite_connected:
-    path:     /get
+    path:    /
     defaults: { _controller: CSGOTalksiteBundle:Site:display }

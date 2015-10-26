@@ -4,7 +4,6 @@ namespace CSGOTalk\siteBundle\Controller;
 
 use CSGOTalk\siteBundle\Entity\Thread;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class SiteController extends Controller
@@ -13,7 +12,7 @@ class SiteController extends Controller
     {
         $steamApiKey = '664556FD11D9A256BD39BCBDFE757F60';
         $steamAuth = $this->get('steam_auth');
-        $authUrl = $steamAuth->genUrl('http://localhost:8080/Symfony/app_dev.php/get', false);
+        $authUrl = $steamAuth->genUrl('http://localhost:8080/Symfony/app_dev.php/', false);
 
         return $this->render('CSGOTalksiteBundle:Site:index.html.twig', array(
         	'button' => $authUrl)
@@ -28,10 +27,10 @@ class SiteController extends Controller
         );
     }
 
-    public function displayAction()
+    public function displayAction(Request $request)
     {
         $session = $request->getSession();
-
+        $steamAuth = $this->get('steam_auth');
         $steamId = $steamAuth->validate();
 
         if ($steamId) {
@@ -43,5 +42,9 @@ class SiteController extends Controller
         if (!$session->get('steamId')) {
             return $this->redirect($authUrl);
         }
+
+        return $this->render('CSGOTalksiteBundle:Site:display.html.twig', array(
+            'button' => $session->get('steamId'))
+        );
     }
 }
