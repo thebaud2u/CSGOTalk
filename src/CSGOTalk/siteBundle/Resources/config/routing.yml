@@ -6,6 +6,6 @@ csgo_talksite_threads:
     path:     /threads
     defaults: { _controller: CSGOTalksiteBundle:Site:threads }
 
-csgo_talksite_connect:
-    path:     /home
-    defaults: { _controller: CSGOTalksiteBundle:Site:index }
+csgo_talksite_connected:
+    path:     /get
+    defaults: { _controller: CSGOTalksiteBundle:Site:display }
