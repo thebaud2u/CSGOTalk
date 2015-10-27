@@ -20,7 +20,20 @@
                 </ul>
 
                 <form class="navbar-form navbar-left">
-                    <a href="{{ button | raw }}"><img src="https://steamcommunity-a.akamaihd.net/public/images/signinthroughsteam/sits_small.png"></a>
+                    {% if button %}
+                        <a href="{{ button | raw }}">
+                            <img src="https://steamcommunity-a.akamaihd.net/public/images/signinthroughsteam/sits_small.png">
+                        </a>
+                    {% else %}
+                        <div class="player_name">
+                            <a href="{{ path('csgo_talksite_profile') }}">
+                                {{ nickname }}
+                            </a>
+                        </div>
+                        <div class="player_avatar">
+                            <img src="{{ avatar }}">
+                        </div>
+                    {% endif %}
                 </form>
             </div>
         </div>
