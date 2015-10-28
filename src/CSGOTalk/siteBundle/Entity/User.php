@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class User
 {
     /**
-     * @ORM\OneToOne(targetEntity="CSGOTalk\siteBundle\Entity\ImageRepository", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="CSGOTalk\siteBundle\Entity\Image", cascade={"persist", "remove"})
      */
     private $image;
 
@@ -39,7 +39,6 @@ class User
      * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
-
 
     /**
      * Get id

@@ -59,14 +59,35 @@ class SiteController extends Controller
 
     public function indexAction(Request $request)
     {   
-        $array = self::menu($request);
-        return $this->render('CSGOTalksiteBundle:Site:index.html.twig', $array);
+        $userInfoArray = self::menu($request);
+        return $this->render('CSGOTalksiteBundle:Site:index.html.twig', $userInfoArray);
     }
 
     public function threadsAction(Request $request)
-    {
-    	//$threads = $this->getDoctrine()->getManager()->getRepository('CSGOTalksiteBundle:Thread')->getThreads();
-        $array = self::menu($request);
+    {   
+        $teamName = array();
+        $players = array();
+
+        // On récupère les joueurs de l'équipe (pour le moment la seule équipe, plus tard, recherche par id d'équipe ou même du nom de l'équipe)
+    	$team = $this->getDoctrine()->getManager()->getRepository('CSGOTalksiteBundle:TeamPlayer')->getTeam();
+
+        // On récupère le nom de l'équipe et on la stock dans un tableau associatif
+        $team_1_Name = $team[0]->getTeam()->getName();
+        $teamName['teamName'] = $team_1_Name;
+
+        // On va parcourir les joueurs de l'équipe et les stocker dans un tableau associatif (player_id => pplayer_name)
+        for($i = 0; $i<5 ; $i++){
+            $players['Player'][$i] = $team[$i]->getPlayer()->getName();
+        }
+
+        // On récupère les infos de l'utilisateur pour l'affichage du header
+        $userInfoArray = self::menu($request);
+
+        // On merge tout les tableaux qu'on a pour les envoyers aux vues
+        // On a besoin de tableau associatifs pour pouvoir différencier ce qu'on envoi à la vue
+        // et ainsi afficher ce qu'on veut là où on le veut.
+        $array = array_merge($userInfoArray, $teamName, $players);
+
         return $this->render('CSGOTalksiteBundle:Site:threads.html.twig', $array);
     }
 }

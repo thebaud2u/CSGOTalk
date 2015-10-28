@@ -9,7 +9,11 @@
 {% endblock %}
 
 {% block csgotalk_body %}
-    <br><br><br><br><br><br><br><br>
-    <p>COUCOU SUR LES THREADS</p>
-{% endblock %}
+    {{ teamName }}
+    {% for playerName in Player %}
+        <li>
+            {{ playerName }}
+        </li>
+    {% endfor %}
 
+{% endblock %}
