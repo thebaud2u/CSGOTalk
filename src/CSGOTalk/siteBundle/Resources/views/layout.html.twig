@@ -5,7 +5,39 @@
 {% endblock %}
 
 {% block body %}
-	
+	<nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="{{ path('csgo_talksite_homepage') }}">
+                    <img src="{{ asset('bundles/csgotalksite/images/logo.png') }}"></a>
+            </div>
+
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                        <li><a href="{{ path('csgo_talksite_threads') }}">Let's Talk</a></li>
+                    </li>
+                </ul>
+
+                <form class="navbar-form navbar-left">
+                    {% if button %}
+                        <a href="{{ button | raw }}">
+                            <img src="https://steamcommunity-a.akamaihd.net/public/images/signinthroughsteam/sits_small.png">
+                        </a>
+                    {% else %}
+                        <div class="player_name">
+                            <a href="{{ userUrl }}">
+                                {{ nickname }}
+                            </a>
+                        </div>
+                        <div class="player_avatar">
+                            <img src="{{ avatar }}">
+                        </div>
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+    </nav>
   	{% block csgotalk_body %}
   	{% endblock %}
 

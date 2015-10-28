@@ -5,7 +5,3 @@ csgo_talksite_homepage:
 csgo_talksite_threads:
     path:    /threads
     defaults: { _controller: CSGOTalksiteBundle:Site:threads }
-
-csgo_talksite_profile:
-    path:    /profile
-    defaults: { _controller: CSGOTalksiteBundle:Site:profile }
