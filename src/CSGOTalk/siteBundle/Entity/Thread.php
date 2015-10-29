@@ -21,6 +21,12 @@ class Thread
      */
     private $id;
 
+    /**
+     * @ORM\OneToOne(targetEntity="CSGOTalk\siteBundle\Entity\Matchs", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $match_id;
+
 
     /**
      * Get id
@@ -31,5 +37,28 @@ class Thread
     {
         return $this->id;
     }
-}
 
+    /**
+     * Set matchId
+     *
+     * @param \CSGOTalk\siteBundle\Entity\Matchs $matchId
+     *
+     * @return Thread
+     */
+    public function setMatchId(\CSGOTalk\siteBundle\Entity\Matchs $matchId)
+    {
+        $this->match_id = $matchId;
+    
+        return $this;
+    }
+
+    /**
+     * Get matchId
+     *
+     * @return \CSGOTalk\siteBundle\Entity\Matchs
+     */
+    public function getMatchId()
+    {
+        return $this->match_id;
+    }
+}
