@@ -9,11 +9,10 @@
 {% endblock %}
 
 {% block csgotalk_body %}
-    {{ teamName }}
-    {% for playerName in Player %}
-        <li>
-            {{ playerName }}
-        </li>
-    {% endfor %}
+    <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br>
+	{{ form_start(form) }}
+    {{ form_errors(form) }}
 
+    {{ form_row(form.getTeamId1) }}
+	{{ form_end(form) }}
 {% endblock %}

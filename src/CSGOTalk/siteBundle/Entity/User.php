@@ -27,9 +27,9 @@ class User
     private $id;
 
     /**
-     * @var integer
+     * @var string
      *
-     * @ORM\Column(name="steam_id", type="integer")
+     * @ORM\Column(name="steam_id", type="string", length=255)
      */
     private $steamId;
 
@@ -101,11 +101,11 @@ class User
     /**
      * Set image
      *
-     * @param \CSGOTalk\siteBundle\Entity\ImageRepository $image
+     * @param \CSGOTalk\siteBundle\Entity\Image $image
      *
      * @return User
      */
-    public function setImage(\CSGOTalk\siteBundle\Entity\ImageRepository $image = null)
+    public function setImage(\CSGOTalk\siteBundle\Entity\Image $image = null)
     {
         $this->image = $image;
 
@@ -115,7 +115,7 @@ class User
     /**
      * Get image
      *
-     * @return \CSGOTalk\siteBundle\Entity\ImageRepository
+     * @return \CSGOTalk\siteBundle\Entity\Image
      */
     public function getImage()
     {
