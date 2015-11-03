@@ -11,22 +11,18 @@
 {% block csgotalk_body %}
 
     <div class="threads_background">
-    	<div class="btn">
-    		<a href="{{ path('csgo_talksite_create_thread') }}">
-    			Create a thread
-    		</a>
-    	</div>
     	<div class="threads_content_container">
-    		<div class="current_threads">
-    			<p>Current Threads :</p>
+    		<div class="create_thread">
+    			<p>Create your thread:</p>
     		</div>
     		<div class="threads_content">
-				
+				{{ form_start(form) }}
+	    		{{ form_errors(form) }}
+
+	    		{{ form_row(form.getTeamId1) }}
+				{{ form_end(form) }}
 			</div>
 		</div>
     </div>
 
-	
-
-	
 {% endblock %}

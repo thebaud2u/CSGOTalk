@@ -5,3 +5,7 @@ csgo_talksite_homepage:
 csgo_talksite_threads:
     path:    /threads
     defaults: { _controller: CSGOTalksiteBundle:Site:threads }
+
+csgo_talksite_create_thread:
+    path:    /create_thread
+    defaults: { _controller: CSGOTalksiteBundle:Site:createThread}

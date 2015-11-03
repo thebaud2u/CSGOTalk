@@ -102,14 +102,21 @@ class SiteController extends Controller
     {   
         $userInfoArray = self::menu($request);
 
+        return $this->render('CSGOTalksiteBundle:Site:threads.html.twig', $userInfoArray);
+    }
+
+    public function createThreadAction(Request $request)
+    {
+        $userInfoArray = self::menu($request);
+
         $match = new Matchs();
         $form = $this->get('form.factory')->create(new MatchsType(), $match);
 
         $formArray = array();
         $formArray['form'] = $form->createView();
         $array = array_merge($userInfoArray, $formArray);
-        
-        return $this->render('CSGOTalksiteBundle:Site:threads.html.twig', $array);
+
+        return $this->render('CSGOTalksiteBundle:Site:create_thread.html.twig', $array);   
     }
 
 /*      $teamName = array();
