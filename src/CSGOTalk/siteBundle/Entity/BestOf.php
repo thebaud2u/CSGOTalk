@@ -22,9 +22,9 @@ class BestOf
     private $id;
 
     /**
-     * @var integer
+     * @var string
      *
-     * @ORM\Column(name="number", type="integer")
+     * @ORM\Column(name="number", type="string", length=255)
      */
     private $number;
 
@@ -42,7 +42,7 @@ class BestOf
     /**
      * Set number
      *
-     * @param integer $number
+     * @param string $number
      *
      * @return BestOf
      */
@@ -56,7 +56,7 @@ class BestOf
     /**
      * Get number
      *
-     * @return integer
+     * @return string
      */
     public function getNumber()
     {

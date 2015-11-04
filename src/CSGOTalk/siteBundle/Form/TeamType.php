@@ -17,7 +17,7 @@ class TeamType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('getName', 'entity', array(
+            ->add('name', 'entity', array(
                   'class'    => 'CSGOTalksiteBundle:Team',
                   'property' => 'getName',
                   'multiple' => false

@@ -7,6 +7,8 @@ use CSGOTalk\siteBundle\Entity\User;
 use CSGOTalk\siteBundle\Entity\Image;
 use CSGOTalk\siteBundle\Entity\Matchs;
 use CSGOTalk\siteBundle\Entity\Team;
+use CSGOTalk\siteBundle\Entity\BestOf;
+use CSGOTalk\siteBundle\Entity\Map;
 
 use CSGOTalk\siteBundle\Form\MatchsType;
 
@@ -111,6 +113,21 @@ class SiteController extends Controller
 
         $match = new Matchs();
         $form = $this->get('form.factory')->create(new MatchsType(), $match);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            $data = $form->getData();
+            $match->setTeamId1($data->getTeamId1());
+            $match->setTeamId2($data->getTeamId2());
+            $match->setBestOfId($data->getBestOfId());
+            $match->setMap($data->getMap());
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($match);
+            $em->flush();
+
+            return $this->redirectToRoute('csgo_talksite_threads');
+        }
 
         $formArray = array();
         $formArray['form'] = $form->createView();
