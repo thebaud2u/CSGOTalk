@@ -19,7 +19,7 @@ class BestOfType extends AbstractType
         $builder
             ->add('number', 'entity', array(
                   'class'    => 'CSGOTalksiteBundle:BestOf',
-                  'property' => 'getNumber',
+                  'property' => 'number',
                   'multiple' => false
                 ))
         ;

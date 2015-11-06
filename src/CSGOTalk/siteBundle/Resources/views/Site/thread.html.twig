@@ -1,0 +1,50 @@
+{% extends "CSGOTalksiteBundle::layout.html.twig" %}
+{% set button = button %}
+{% set userUrl = userUrl %}
+{% set nickname = nickname %}
+{% set avatar = avatar %}
+
+{% block title %}
+    {{ parent() }}
+{% endblock %}
+
+{% block csgotalk_body %}
+
+    <div class="threads_background">
+    	
+    	<div class="thread_content_container">
+    		<div class="current_threads">
+    			<p></p>
+    		</div>
+    		<div class="threads_content">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            <b>{{ Info.Team_1 }}</b> vs <b>{{ Info.Team_2 }}</b>
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        Best of <b>{{ Info.BestOf }}</b> on <b>{{ Info.Map }}</b>
+                    </div>
+                    <div class="panel-footer">
+                        <b>{{ Info.Team_1 }}</b> lineup :
+                        <ul>
+                            {% for key,value in Info.TeamPlayer1 %}
+                                <li>{{ value }}</li>
+                            {% endfor %}
+                        </ul>
+                        
+                        </br>
+                        <b>{{ Info.Team_2 }}</b> lineup :
+                        <ul>
+                            {% for key,value in Info.TeamPlayer2 %}
+                                <li>{{ value }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+			</div>
+		</div>
+    </div>
+	
+{% endblock %}

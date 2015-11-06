@@ -40,8 +40,9 @@ class Matchs
     private $bestOfId;
 
     /**
-     * @ORM\OneToMany(targetEntity="CSGOTalk\siteBundle\Entity\Map", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
+     * @var string
+     *
+     * @ORM\Column(name="Map", type="string", length=255)
      */
     private $map;
 
@@ -151,4 +152,5 @@ class Matchs
     {
         return $this->map;
     }
+
 }

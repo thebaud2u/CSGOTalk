@@ -19,7 +19,7 @@ class TeamType extends AbstractType
         $builder
             ->add('name', 'entity', array(
                   'class'    => 'CSGOTalksiteBundle:Team',
-                  'property' => 'getName',
+                  'property' => 'name',
                   'multiple' => false
                 ))
         ;

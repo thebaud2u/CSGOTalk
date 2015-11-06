@@ -12,20 +12,19 @@ use Doctrine\ORM\EntityRepository;
  */
 class TeamPlayerRepository extends EntityRepository
 {
-	public function getTeam()
+	public function getTeam($id)
 	{
 	    $qb = $this->createQueryBuilder('TeamPlayer');
-
 	    $qb
-	      	->leftjoin('TeamPlayer.team', 'Team')
+	      	->join('TeamPlayer.team', 'Team')
 	      	->join('TeamPlayer.player', 'Player')
 	      	->addSelect('Team')
 	      	->addSelect('Player')
+	      	->where('Team.id = :id')
+    		->setParameter('id', $id)
 	    ;
-
 	    return $qb
 	      	->getQuery()
 	      	->getResult()
 	    ;
-	}
-}
+	}}

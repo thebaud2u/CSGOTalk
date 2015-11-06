@@ -6,8 +6,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-use CSGOTalk\siteBundle\Entity\Map;
-
 class MapType extends AbstractType
 {
     /**
@@ -17,12 +15,7 @@ class MapType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', 'entity', array(
-                  'class'    => 'CSGOTalksiteBundle:Map',
-                  'property' => 'getName',
-                  'multiple' => false,
-                  'label' => 'Maps'
-                ))
+            ->add('map' => 'text')
         ;
     }
     

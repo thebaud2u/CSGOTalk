@@ -19,10 +19,10 @@ class MatchsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('teamId1',    new TeamType)
-            ->add('teamId2',    new TeamType)
-            ->add('bestOfId',   new BestOfType)
-            ->add('map',        new MapType)
+            ->add('teamId1',    new TeamType())
+            ->add('teamId2',    new TeamType())
+            ->add('bestOfId',   new BestOfType())
+            ->add('map',        'text')
             ->add('save',       'submit')
         ;
     }

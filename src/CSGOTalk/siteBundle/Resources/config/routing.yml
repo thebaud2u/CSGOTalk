@@ -9,3 +9,9 @@ csgo_talksite_threads:
 csgo_talksite_create_thread:
     path:    /create_thread
     defaults: { _controller: CSGOTalksiteBundle:Site:createThread}
+
+csgo_talksite_show_thread:
+    path:     /thread/{id}
+    defaults: { _controller: CSGOTalksiteBundle:Site:thread }
+    requirements: 
+        id: \d+

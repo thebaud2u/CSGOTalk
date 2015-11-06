@@ -2,13 +2,7 @@
 
 namespace CSGOTalk\siteBundle\Controller;
 
-use CSGOTalk\siteBundle\Entity\Thread;
-use CSGOTalk\siteBundle\Entity\User;
-use CSGOTalk\siteBundle\Entity\Image;
 use CSGOTalk\siteBundle\Entity\Matchs;
-use CSGOTalk\siteBundle\Entity\Team;
-use CSGOTalk\siteBundle\Entity\BestOf;
-use CSGOTalk\siteBundle\Entity\Map;
 
 use CSGOTalk\siteBundle\Form\MatchsType;
 
@@ -102,9 +96,39 @@ class SiteController extends Controller
 
     public function threadsAction(Request $request)
     {   
+        $em = $this->getDoctrine()->getManager();
         $userInfoArray = self::menu($request);
+        $matchInfoArray = array();
 
-        return $this->render('CSGOTalksiteBundle:Site:threads.html.twig', $userInfoArray);
+        $threads = $em->getRepository('CSGOTalksiteBundle:Thread')->findAll();
+
+        for ($i = 0; $i < count($threads); $i++)
+        {
+            $matchId = $threads[$i]->getMatchId();
+
+            $matchId = $em->getRepository('CSGOTalksiteBundle:Matchs')->find($matchId);
+            $matchInfoArray['Info']['Match_'.$i]['MatchId'] = $matchId->getId();
+
+            $team1Id = $matchId->getTeamId1();
+            $team2Id = $matchId->getTeamId2();
+
+            $teamPlayerTeam1 = $em->getRepository('CSGOTalksiteBundle:TeamPlayer')->getTeam($team1Id);
+            $teamPlayerTeam2 = $em->getRepository('CSGOTalksiteBundle:TeamPlayer')->getTeam($team2Id);        
+
+            $matchInfoArray['Info']['Match_'.$i]['Team_1'] = $teamPlayerTeam1[0]->getTeam()->getName();
+            $matchInfoArray['Info']['Match_'.$i]['Team_2'] = $teamPlayerTeam2[0]->getTeam()->getName();
+
+            $bestOfId = $matchId->getBestOfId();
+            $bestOf = $em->getRepository('CSGOTalksiteBundle:BestOf')->find($bestOfId);
+            $matchInfoArray['Info']['Match_'.$i]['BestOf'] = $bestOf->getNumber();
+
+            $matchInfoArray['Info']['Match_'.$i]['Map'] = $matchId->getMap();
+            
+        }
+        
+        $array = array_merge($userInfoArray, $matchInfoArray);
+
+        return $this->render('CSGOTalksiteBundle:Site:threads.html.twig', $array);
     }
 
     public function createThreadAction(Request $request)
@@ -117,10 +141,6 @@ class SiteController extends Controller
 
         if ($form->isSubmitted()) {
             $data = $form->getData();
-            $match->setTeamId1($data->getTeamId1());
-            $match->setTeamId2($data->getTeamId2());
-            $match->setBestOfId($data->getBestOfId());
-            $match->setMap($data->getMap());
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($match);
@@ -136,29 +156,38 @@ class SiteController extends Controller
         return $this->render('CSGOTalksiteBundle:Site:create_thread.html.twig', $array);   
     }
 
-/*      $teamName = array();
-        $players = array();
+    public function threadAction(Request $request, $id)
+    {   
+        $em = $this->getDoctrine()->getManager();
+        $userInfoArray = self::menu($request);
+        $threadInfoArray = array();
 
-        // On récupère les joueurs de l'équipe (pour le moment la seule équipe, plus tard, recherche par id d'équipe ou même du nom de l'équipe)
-        $team = $this->getDoctrine()->getManager()->getRepository('CSGOTalksiteBundle:TeamPlayer')->getTeam();
+        $thread = $em->getRepository('CSGOTalksiteBundle:Thread')->find($id);
 
-        // On récupère le nom de l'équipe et on la stock dans un tableau associatif
-        $team_1_Name = $team[0]->getTeam()->getName();
-        $teamName['teamName'] = $team_1_Name;
+        $matchId = $thread->getMatchId();
 
-        // On va parcourir les joueurs de l'équipe et les stocker dans un tableau associatif (player_id => pplayer_name)
-        for($i = 0; $i<5 ; $i++){
-            $players['Player'][$i] = $team[$i]->getPlayer()->getName();
+        $team1Id = $matchId->getTeamId1();
+        $team2Id = $matchId->getTeamId2();
+
+        $teamPlayerTeam1 = $em->getRepository('CSGOTalksiteBundle:TeamPlayer')->getTeam($team1Id);
+        $teamPlayerTeam2 = $em->getRepository('CSGOTalksiteBundle:TeamPlayer')->getTeam($team2Id);        
+
+        $threadInfoArray['Info']['Team_1'] = $teamPlayerTeam1[0]->getTeam()->getName();
+        $threadInfoArray['Info']['Team_2'] = $teamPlayerTeam2[0]->getTeam()->getName();
+
+        $bestOfId = $matchId->getBestOfId();
+        $bestOf = $em->getRepository('CSGOTalksiteBundle:BestOf')->find($bestOfId);
+        $threadInfoArray['Info']['BestOf'] = $bestOf->getNumber();
+
+        $threadInfoArray['Info']['Map'] = $matchId->getMap();
+
+        for ($i = 0; $i<5 ; $i++){
+            $threadInfoArray['Info']['TeamPlayer1'][$i] = $teamPlayerTeam1[$i]->getPlayer()->getName();
+            $threadInfoArray['Info']['TeamPlayer2'][$i] = $teamPlayerTeam2[$i]->getPlayer()->getName();
         }
 
-        // On récupère les infos de l'utilisateur pour l'affichage du header
-        $userInfoArray = self::menu($request);
+        $array = array_merge($userInfoArray, $threadInfoArray);
 
-        // On merge tout les tableaux qu'on a pour les envoyers aux vues
-        // On a besoin de tableau associatifs pour pouvoir différencier ce qu'on envoi à la vue
-        // et ainsi afficher ce qu'on veut là où on le veut.
-        $array = array_merge($userInfoArray, $teamName, $players);
-
-        return $this->render('CSGOTalksiteBundle:Site:threads.html.twig', $array);
-*/
+        return $this->render('CSGOTalksiteBundle:Site:thread.html.twig', $array);
+    }
 }
