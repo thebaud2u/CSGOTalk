@@ -6,8 +6,8 @@ csgo_talksite_threads:
     path:    /threads
     defaults: { _controller: CSGOTalksiteBundle:Site:threads }
 
-csgo_talksite_create_thread:
-    path:    /create_thread
+csgo_talksite_add_thread:
+    path:    /add_thread
     defaults: { _controller: CSGOTalksiteBundle:Site:createThread}
 
 csgo_talksite_show_thread:
@@ -15,3 +15,13 @@ csgo_talksite_show_thread:
     defaults: { _controller: CSGOTalksiteBundle:Site:thread }
     requirements: 
         id: \d+
+
+csgo_talksite_add_message:
+    path:     /add_message/{id}
+    defaults: { _controller: CSGOTalksiteBundle:Site:addMessage }
+    requirements: 
+        id: \d+
+
+csgo_talksite_error_connected_status:
+    path:     /error
+    defaults: { _controller: CSGOTalksiteBundle:Site:errorConnected }

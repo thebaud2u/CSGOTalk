@@ -1,0 +1,28 @@
+{% extends "CSGOTalksiteBundle::layout.html.twig" %}
+{% set button = button %}
+{% set userUrl = userUrl %}
+{% set nickname = nickname %}
+{% set avatar = avatar %}
+
+{% block title %}
+    {{ parent() }}
+{% endblock %}
+
+{% block csgotalk_body %}
+
+    <div class="threads_background">
+    	<div class="create_thread_content_container">
+    		<div class="create_thread">
+    			<p>Say what you have to say dude ...</p>
+    		</div>
+    		<div class="threads_content">
+				{{ form_start(form) }}
+                
+                {{ form_errors(form) }}
+
+                {{ form_end(form) }}
+			</div>
+		</div>
+    </div>
+
+{% endblock %}

@@ -11,9 +11,9 @@
 {% block csgotalk_body %}
 
     <div class="threads_background">
-    	<a href="{{ path('csgo_talksite_create_thread') }}">
+    	<a href="{{ path('csgo_talksite_add_thread') }}">
             <div class="btn">
-    		  Create a thread
+    		  Add a thread
 	        </div>
         </a>
     	<div class="threads_content_container">
@@ -21,20 +21,33 @@
     			<p>Current Threads :</p>
     		</div>
     		<div class="threads_content">
-				{% for Match in Info %}
-                    <a href="{{ path('csgo_talksite_show_thread', {'id': Match.MatchId}) }}">
-                        <div class="panel panel-primary">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">
-                                    <b>{{ Match.Team_1 }}</b> vs <b>{{ Match.Team_2 }}</b>
-                                </h3>
+                {% if Info %}
+    				{% for Match in Info %}
+                        <a href="{{ path('csgo_talksite_show_thread', {'id': Match.MatchId}) }}">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        <b>{{ Match.Team_1 }}</b> vs <b>{{ Match.Team_2 }}</b>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    Best of {{ Match.BestOf }} on {{ Match.Map }}
+                                </div>
                             </div>
-                            <div class="panel-body">
-                                Best of {{ Match.BestOf }} on {{ Match.Map }}
-                            </div>
+                        </a>
+                    {% endfor %}
+                {% else %}
+                    <div class="panel panel-danger">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                Nope
+                            </h3>
                         </div>
-                    </a>
-                {% endfor %}
+                        <div class="panel-body">
+                            No thread yet, create one of come back later...
+                        </div>
+                    </div>
+                {% endif %}
 			</div>
 		</div>
     </div>

@@ -42,7 +42,7 @@ class Matchs
     /**
      * @var string
      *
-     * @ORM\Column(name="Map", type="string", length=255)
+     * @ORM\Column(name="map", type="string", length=255)
      */
     private $map;
 

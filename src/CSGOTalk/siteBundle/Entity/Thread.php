@@ -27,6 +27,11 @@ class Thread
      */
     private $match_id;
 
+    /**
+     * @ORM\OneToMany(targetEntity="CSGOTalk\siteBundle\Entity\Message", mappedBy="thread")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $messages;
 
     /**
      * Get id
@@ -60,5 +65,46 @@ class Thread
     public function getMatchId()
     {
         return $this->match_id;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->message = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Get messages
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getMessages()
+    {
+        return $this->messages;
+    }
+
+    /**
+     * Add message
+     *
+     * @param \CSGOTalk\siteBundle\Entity\Message $message
+     *
+     * @return Thread
+     */
+    public function addMessage(\CSGOTalk\siteBundle\Entity\Message $message)
+    {
+        $this->messages[] = $message;
+    
+        return $this;
+    }
+
+    /**
+     * Remove message
+     *
+     * @param \CSGOTalk\siteBundle\Entity\Message $message
+     */
+    public function removeMessage(\CSGOTalk\siteBundle\Entity\Message $message)
+    {
+        $this->messages->removeElement($message);
     }
 }

@@ -6,10 +6,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-use CSGOTalk\siteBundle\Form\TeamType;
-use CSGOTalk\siteBundle\Form\BestOfType;
-use CSGOTalk\siteBundle\Form\MapType;
-
 class MatchsType extends AbstractType
 {
     /**
@@ -19,9 +15,24 @@ class MatchsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('teamId1',    new TeamType())
-            ->add('teamId2',    new TeamType())
-            ->add('bestOfId',   new BestOfType())
+            ->add('teamId1', 'entity', array(
+            'class'    => 'CSGOTalksiteBundle:Team',
+            'property' => 'name',
+            'multiple' => false,
+            'expanded' => false
+          ))
+            ->add('teamId2', 'entity', array(
+            'class'    => 'CSGOTalksiteBundle:Team',
+            'property' => 'name',
+            'multiple' => false,
+            'expanded' => false
+          ))
+            ->add('bestOfId', 'entity', array(
+            'class'    => 'CSGOTalksiteBundle:BestOf',
+            'property' => 'number',
+            'multiple' => false,
+            'expanded' => false
+          ))
             ->add('map',        'text')
             ->add('save',       'submit')
         ;

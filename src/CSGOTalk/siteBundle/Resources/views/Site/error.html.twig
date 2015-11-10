@@ -1,0 +1,33 @@
+{% extends "CSGOTalksiteBundle::layout.html.twig" %}
+{% set button = button %}
+{% set userUrl = userUrl %}
+{% set nickname = nickname %}
+{% set avatar = avatar %}
+
+{% block title %}
+    {{ parent() }}
+{% endblock %}
+
+{% block csgotalk_body %}
+
+    <div class="threads_background">
+    	<div class="create_thread_content_container">
+    		<div class="current_threads">
+    			<p>Oups ...</p>
+    		</div>
+    		<div class="threads_content">
+                <div class="panel panel-danger">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Nope
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        Dude, you need to be connected via Steam to add a thread...
+                    </div>
+                </div>
+			</div>
+		</div>
+    </div>
+	
+{% endblock %}

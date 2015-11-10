@@ -3,8 +3,13 @@
 namespace CSGOTalk\siteBundle\Controller;
 
 use CSGOTalk\siteBundle\Entity\Matchs;
+use CSGOTalk\siteBundle\Entity\Message;
+use CSGOTalk\siteBundle\Entity\Image;
+use CSGOTalk\siteBundle\Entity\User;
+use CSGOTalk\siteBundle\Entity\Thread;
 
 use CSGOTalk\siteBundle\Form\MatchsType;
+use CSGOTalk\siteBundle\Form\MessageType;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -34,7 +39,7 @@ class SiteController extends Controller
         if(!$session->get('steamId'))
         {
             $steamApiKey = '664556FD11D9A256BD39BCBDFE757F60';
-            $authUrl = $steamAuth->genUrl('http://localhost:8080/Symfony/web/app_dev.php/home', false);
+            $authUrl = $steamAuth->genUrl('http://localhost:8080/Symfony/web/app_dev.php/threads', false);
 
             return array(
                 'button' => $authUrl,
@@ -50,7 +55,6 @@ class SiteController extends Controller
             $steamId = $session->get('steamId');
             $jsonInfo = file_get_contents("http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=664556FD11D9A256BD39BCBDFE757F60&steamids=$steamId");
             $data = json_decode($jsonInfo, true);
-            //var_dump($data['response']['players'][0]);
 
             $userName = $data['response']['players'][0]['personaname'];
             $userAvatar = $data['response']['players'][0]['avatar'];
@@ -99,6 +103,7 @@ class SiteController extends Controller
         $em = $this->getDoctrine()->getManager();
         $userInfoArray = self::menu($request);
         $matchInfoArray = array();
+        $matchInfoArray['Info'] = "";
 
         $threads = $em->getRepository('CSGOTalksiteBundle:Thread')->findAll();
 
@@ -123,7 +128,6 @@ class SiteController extends Controller
             $matchInfoArray['Info']['Match_'.$i]['BestOf'] = $bestOf->getNumber();
 
             $matchInfoArray['Info']['Match_'.$i]['Map'] = $matchId->getMap();
-            
         }
         
         $array = array_merge($userInfoArray, $matchInfoArray);
@@ -136,24 +140,35 @@ class SiteController extends Controller
         $userInfoArray = self::menu($request);
 
         $match = new Matchs();
+        $thread = new Thread();
+
         $form = $this->get('form.factory')->create(new MatchsType(), $match);
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
-            $data = $form->getData();
+            if(is_null($userInfoArray['nickname'])) {
+                return $this->redirectToRoute('csgo_talksite_error_connected_status');
+            }
+            else {
+                $data = $form->getData();
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($match);
-            $em->flush();
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($match);
+                $em->flush();
 
-            return $this->redirectToRoute('csgo_talksite_threads');
+                $thread->setMatchId($match);
+                $em->persist($thread);
+                $em->flush();
+
+                return $this->redirectToRoute('csgo_talksite_threads');
+            }
         }
 
         $formArray = array();
         $formArray['form'] = $form->createView();
         $array = array_merge($userInfoArray, $formArray);
 
-        return $this->render('CSGOTalksiteBundle:Site:create_thread.html.twig', $array);   
+        return $this->render('CSGOTalksiteBundle:Site:add_thread.html.twig', $array);   
     }
 
     public function threadAction(Request $request, $id)
@@ -161,6 +176,8 @@ class SiteController extends Controller
         $em = $this->getDoctrine()->getManager();
         $userInfoArray = self::menu($request);
         $threadInfoArray = array();
+
+        $threadInfoArray['Info']['ThreadId'] = $id;
 
         $thread = $em->getRepository('CSGOTalksiteBundle:Thread')->find($id);
 
@@ -189,5 +206,37 @@ class SiteController extends Controller
         $array = array_merge($userInfoArray, $threadInfoArray);
 
         return $this->render('CSGOTalksiteBundle:Site:thread.html.twig', $array);
+    }
+
+    public function addMessageAction(Request $request, $id)
+    {   
+        $em = $this->getDoctrine()->getManager();
+        $userInfoArray = self::menu($request);
+
+        $message = new Message();
+        $form = $this->get('form.factory')->create(new MessageType(), $message);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            $data = $form->getData();
+
+            $em->persist($message);
+            $em->flush();
+
+            return $this->redirectToRoute('csgo_talksite_show_thread');
+        }
+
+        $formArray = array();
+        $formArray['form'] = $form->createView();
+        $array = array_merge($userInfoArray, $formArray);
+
+        return $this->render('CSGOTalksiteBundle:Site:add_message.html.twig', $array);
+    }
+
+    public function errorConnectedAction(Request $request)
+    {
+        $userInfoArray = self::menu($request);
+
+        return $this->render('CSGOTalksiteBundle:Site:error.html.twig', $userInfoArray);
     }
 }
