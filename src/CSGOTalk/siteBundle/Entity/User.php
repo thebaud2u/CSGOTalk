@@ -41,6 +41,11 @@ class User
     private $name;
 
     /**
+     * @ORM\OneToMany(targetEntity="CSGOTalk\siteBundle\Entity\Message", mappedBy="user")
+     **/
+    private $message;
+
+    /**
      * Get id
      *
      * @return integer
@@ -120,5 +125,46 @@ class User
     public function getImage()
     {
         return $this->image;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->message = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add message
+     *
+     * @param \CSGOTalk\siteBundle\Entity\Message $message
+     *
+     * @return User
+     */
+    public function addMessage(\CSGOTalk\siteBundle\Entity\Message $message)
+    {
+        $this->message[] = $message;
+    
+        return $this;
+    }
+
+    /**
+     * Remove message
+     *
+     * @param \CSGOTalk\siteBundle\Entity\Message $message
+     */
+    public function removeMessage(\CSGOTalk\siteBundle\Entity\Message $message)
+    {
+        $this->message->removeElement($message);
+    }
+
+    /**
+     * Get message
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getMessage()
+    {
+        return $this->message;
     }
 }

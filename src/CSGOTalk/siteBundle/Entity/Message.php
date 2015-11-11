@@ -22,10 +22,10 @@ class Message
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="CSGOTalk\siteBundle\Entity\User", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="CSGOTalk\siteBundle\Entity\User", inversedBy="message")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $user_id;
+    private $user;
 
     /**
      * @var string
@@ -107,30 +107,6 @@ class Message
     }
 
     /**
-     * Set userId
-     *
-     * @param \CSGOTalk\siteBundle\Entity\User $userId
-     *
-     * @return Message
-     */
-    public function setUserId(\CSGOTalk\siteBundle\Entity\User $userId)
-    {
-        $this->user_id = $userId;
-    
-        return $this;
-    }
-
-    /**
-     * Get userId
-     *
-     * @return \CSGOTalk\siteBundle\Entity\User
-     */
-    public function getUserId()
-    {
-        return $this->user_id;
-    }
-
-    /**
      * Set thread
      *
      * @param \CSGOTalk\siteBundle\Entity\Thread $thread
@@ -152,5 +128,29 @@ class Message
     public function getThread()
     {
         return $this->thread;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \CSGOTalk\siteBundle\Entity\User $user
+     *
+     * @return Message
+     */
+    public function setUser(\CSGOTalk\siteBundle\Entity\User $user)
+    {
+        $this->user = $user;
+    
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \CSGOTalk\siteBundle\Entity\User
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 }

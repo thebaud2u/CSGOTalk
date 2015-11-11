@@ -29,7 +29,7 @@ class Thread
 
     /**
      * @ORM\OneToMany(targetEntity="CSGOTalk\siteBundle\Entity\Message", mappedBy="thread")
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\JoinColumn(nullable=false)
      */
     private $messages;
 

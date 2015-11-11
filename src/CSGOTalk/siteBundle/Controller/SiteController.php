@@ -92,14 +92,8 @@ class SiteController extends Controller
         }
     }
 
-    public function indexAction(Request $request)
-    {   
-        $userInfoArray = self::menu($request);
-        return $this->render('CSGOTalksiteBundle:Site:index.html.twig', $userInfoArray);
-    }
-
-    public function threadsAction(Request $request)
-    {   
+    public function getThreads($request)
+    {
         $em = $this->getDoctrine()->getManager();
         $userInfoArray = self::menu($request);
         $matchInfoArray = array();
@@ -132,7 +126,73 @@ class SiteController extends Controller
         
         $array = array_merge($userInfoArray, $matchInfoArray);
 
+        return $array;
+    }
+
+    public function getThread($request, $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $userInfoArray = self::menu($request);
+        $threadInfoArray = array();
+
+        $threadInfoArray['Info']['ThreadId'] = $id;
+
+        $thread = $em->getRepository('CSGOTalksiteBundle:Thread')->find($id);
+
+        $matchId = $thread->getMatchId();
+
+        $team1Id = $matchId->getTeamId1();
+        $team2Id = $matchId->getTeamId2();
+
+        $teamPlayerTeam1 = $em->getRepository('CSGOTalksiteBundle:TeamPlayer')->getTeam($team1Id);
+        $teamPlayerTeam2 = $em->getRepository('CSGOTalksiteBundle:TeamPlayer')->getTeam($team2Id);        
+
+        $threadInfoArray['Info']['Team_1'] = $teamPlayerTeam1[0]->getTeam()->getName();
+        $threadInfoArray['Info']['Team_2'] = $teamPlayerTeam2[0]->getTeam()->getName();
+
+        $bestOfId = $matchId->getBestOfId();
+        $bestOf = $em->getRepository('CSGOTalksiteBundle:BestOf')->find($bestOfId);
+        $threadInfoArray['Info']['BestOf'] = $bestOf->getNumber();
+
+        $threadInfoArray['Info']['Map'] = $matchId->getMap();
+
+        for ($i = 0; $i<5 ; $i++){
+            $threadInfoArray['Info']['TeamPlayer1'][$i] = $teamPlayerTeam1[$i]->getPlayer()->getName();
+            $threadInfoArray['Info']['TeamPlayer2'][$i] = $teamPlayerTeam2[$i]->getPlayer()->getName();
+        }
+
+        $messages = $em->getRepository('CSGOTalksiteBundle:Message')->findBy(array('thread' => $id));
+
+        for ($i = 0; $i < count($messages); $i++)
+        {
+            $threadInfoArray['Message'][$i]['User'] = $messages[$i]->getUser()->getName();
+            $threadInfoArray['Message'][$i]['Date'] = $messages[$i]->getDate();
+            $threadInfoArray['Message'][$i]['Message'] = $messages[$i]->getMessage();
+        }
+
+        $array = array_merge($userInfoArray, $threadInfoArray);
+
+        return $array;
+    }
+
+    public function indexAction(Request $request)
+    {   
+        $userInfoArray = self::menu($request);
+        return $this->render('CSGOTalksiteBundle:Site:index.html.twig', $userInfoArray);
+    }
+
+    public function threadsAction(Request $request)
+    {   
+        $array = self::getThreads($request);
+
         return $this->render('CSGOTalksiteBundle:Site:threads.html.twig', $array);
+    }
+
+    public function threadAction(Request $request, $id)
+    {   
+        $array = self::getThread($request, $id);
+
+        return $this->render('CSGOTalksiteBundle:Site:thread.html.twig', $array);
     }
 
     public function createThreadAction(Request $request)
@@ -171,43 +231,6 @@ class SiteController extends Controller
         return $this->render('CSGOTalksiteBundle:Site:add_thread.html.twig', $array);   
     }
 
-    public function threadAction(Request $request, $id)
-    {   
-        $em = $this->getDoctrine()->getManager();
-        $userInfoArray = self::menu($request);
-        $threadInfoArray = array();
-
-        $threadInfoArray['Info']['ThreadId'] = $id;
-
-        $thread = $em->getRepository('CSGOTalksiteBundle:Thread')->find($id);
-
-        $matchId = $thread->getMatchId();
-
-        $team1Id = $matchId->getTeamId1();
-        $team2Id = $matchId->getTeamId2();
-
-        $teamPlayerTeam1 = $em->getRepository('CSGOTalksiteBundle:TeamPlayer')->getTeam($team1Id);
-        $teamPlayerTeam2 = $em->getRepository('CSGOTalksiteBundle:TeamPlayer')->getTeam($team2Id);        
-
-        $threadInfoArray['Info']['Team_1'] = $teamPlayerTeam1[0]->getTeam()->getName();
-        $threadInfoArray['Info']['Team_2'] = $teamPlayerTeam2[0]->getTeam()->getName();
-
-        $bestOfId = $matchId->getBestOfId();
-        $bestOf = $em->getRepository('CSGOTalksiteBundle:BestOf')->find($bestOfId);
-        $threadInfoArray['Info']['BestOf'] = $bestOf->getNumber();
-
-        $threadInfoArray['Info']['Map'] = $matchId->getMap();
-
-        for ($i = 0; $i<5 ; $i++){
-            $threadInfoArray['Info']['TeamPlayer1'][$i] = $teamPlayerTeam1[$i]->getPlayer()->getName();
-            $threadInfoArray['Info']['TeamPlayer2'][$i] = $teamPlayerTeam2[$i]->getPlayer()->getName();
-        }
-
-        $array = array_merge($userInfoArray, $threadInfoArray);
-
-        return $this->render('CSGOTalksiteBundle:Site:thread.html.twig', $array);
-    }
-
     public function addMessageAction(Request $request, $id)
     {   
         $em = $this->getDoctrine()->getManager();
@@ -220,10 +243,19 @@ class SiteController extends Controller
         if ($form->isSubmitted()) {
             $data = $form->getData();
 
+            $thread = $em->getRepository('CSGOTalksiteBundle:Thread')->find($id);
+            
+            $message->setThread($thread);
+
+            $message->setDate( new \DateTime("now"));
+
+            $user = $em->getRepository('CSGOTalksiteBundle:User')->findOneBy(array('name' => $userInfoArray['nickname']));
+            $message->setUser($user);
+
             $em->persist($message);
             $em->flush();
 
-            return $this->redirectToRoute('csgo_talksite_show_thread');
+            return $this->redirectToRoute('csgo_talksite_show_thread',  array('id' => $id));
         }
 
         $formArray = array();

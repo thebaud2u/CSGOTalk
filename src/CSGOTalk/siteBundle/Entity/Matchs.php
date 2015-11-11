@@ -1,9 +1,6 @@
 <?php
-
 namespace CSGOTalk\siteBundle\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
-
 /**
  * Matchs
  *
@@ -22,19 +19,19 @@ class Matchs
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="CSGOTalk\siteBundle\Entity\Team", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="CSGOTalk\siteBundle\Entity\Team", inversedBy="matchTeamId1", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $teamId1;
 
     /**
-     * @ORM\OneToOne(targetEntity="CSGOTalk\siteBundle\Entity\Team", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="CSGOTalk\siteBundle\Entity\Team", inversedBy="matchTeamId2",  cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $teamId2;
 
     /**
-     * @ORM\OneToOne(targetEntity="CSGOTalk\siteBundle\Entity\BestOf", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="CSGOTalk\siteBundle\Entity\BestOf", inversedBy="matchBestOf", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $bestOfId;
@@ -45,7 +42,6 @@ class Matchs
      * @ORM\Column(name="map", type="string", length=255)
      */
     private $map;
-
 
     /**
      * Get id
@@ -152,5 +148,4 @@ class Matchs
     {
         return $this->map;
     }
-
 }

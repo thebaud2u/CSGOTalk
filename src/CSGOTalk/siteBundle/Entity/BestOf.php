@@ -1,9 +1,6 @@
 <?php
-
 namespace CSGOTalk\siteBundle\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
-
 /**
  * BestOf
  *
@@ -28,6 +25,10 @@ class BestOf
      */
     private $number;
 
+    /**
+     * @ORM\OneToMany(targetEntity="CSGOTalk\siteBundle\Entity\Matchs", mappedBy="bestOfId")
+     */
+    private $matchBestOf;
 
     /**
      * Get id
@@ -62,5 +63,45 @@ class BestOf
     {
         return $this->number;
     }
-}
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->matchBestOf = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
+    /**
+     * Add matchBestOf
+     *
+     * @param \CSGOTalk\siteBundle\Entity\Matchs $matchBestOf
+     *
+     * @return BestOf
+     */
+    public function addMatchBestOf(\CSGOTalk\siteBundle\Entity\Matchs $matchBestOf)
+    {
+        $this->matchBestOf[] = $matchBestOf;
+    
+        return $this;
+    }
+
+    /**
+     * Remove matchBestOf
+     *
+     * @param \CSGOTalk\siteBundle\Entity\Matchs $matchBestOf
+     */
+    public function removeMatchBestOf(\CSGOTalk\siteBundle\Entity\Matchs $matchBestOf)
+    {
+        $this->matchBestOf->removeElement($matchBestOf);
+    }
+
+    /**
+     * Get matchBestOf
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getMatchBestOf()
+    {
+        return $this->matchBestOf;
+    }
+}
