@@ -16,9 +16,19 @@
     			<p>Say what you have to say dude ...</p>
     		</div>
     		<div class="threads_content">
-				{{ form_start(form) }}
+				{{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
                 
-                {{ form_errors(form) }}
+                <div class="form-group">
+                  {{ form_label(form.message, "Message ", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+
+                  {{ form_errors(form.message) }}
+
+                  <div class="col-sm-4">
+                    {{ form_widget(form.message, {'attr': {'class': 'form-control'}}) }}
+                  </div>
+                </div>
+
+                {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
 
                 {{ form_end(form) }}
 			</div>

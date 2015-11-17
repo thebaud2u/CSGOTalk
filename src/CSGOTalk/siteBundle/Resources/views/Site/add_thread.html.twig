@@ -16,12 +16,52 @@
     			<p>Add your thread:</p>
     		</div>
     		<div class="threads_content">
-				{{ form_start(form) }}
+				{{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
                 
-	    		{{ form_errors(form) }}
+                <div class="form-group">
+                  {{ form_label(form.teamId1, "First team", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+
+                  {{ form_errors(form.teamId1) }}
+
+                  <div class="col-sm-4">
+                    {{ form_widget(form.teamId1, {'attr': {'class': 'form-control'}}) }}
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  {{ form_label(form.teamId2, "Second team", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+
+                  {{ form_errors(form.teamId2) }}
+
+                  <div class="col-sm-4">
+                    {{ form_widget(form.teamId2, {'attr': {'class': 'form-control'}}) }}
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  {{ form_label(form.bestOfId, "Best Of type", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+
+                  {{ form_errors(form.bestOfId) }}
+
+                  <div class="col-sm-4">
+                    {{ form_widget(form.bestOfId, {'attr': {'class': 'form-control'}}) }}
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  {{ form_label(form.map, "Map(s)", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+
+                  {{ form_errors(form.map) }}
+
+                  <div class="col-sm-4">
+                    {{ form_widget(form.map, {'attr': {'class': 'form-control'}}) }}
+                  </div>
+                </div>
+
+                {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
 
 				{{ form_end(form) }}
-			</div>
+                </div>
 		</div>
     </div>
 

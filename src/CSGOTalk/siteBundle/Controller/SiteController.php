@@ -207,7 +207,7 @@ class SiteController extends Controller
 
         if ($form->isSubmitted()) {
             if(is_null($userInfoArray['nickname'])) {
-                return $this->redirectToRoute('csgo_talksite_error_connected_status');
+                return $this->redirectToRoute('csgo_talksite_error_connected_status', array('error' => 'thread'));
             }
             else {
                 $data = $form->getData();
@@ -241,21 +241,26 @@ class SiteController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
-            $data = $form->getData();
+            if(is_null($userInfoArray['nickname'])) {
+                return $this->redirectToRoute('csgo_talksite_error_connected_status', array('error' => 'message'));
+            }
+            else {
+                $data = $form->getData();
 
-            $thread = $em->getRepository('CSGOTalksiteBundle:Thread')->find($id);
-            
-            $message->setThread($thread);
+                $thread = $em->getRepository('CSGOTalksiteBundle:Thread')->find($id);
+                
+                $message->setThread($thread);
 
-            $message->setDate( new \DateTime("now"));
+                $message->setDate( new \DateTime("now"));
 
-            $user = $em->getRepository('CSGOTalksiteBundle:User')->findOneBy(array('name' => $userInfoArray['nickname']));
-            $message->setUser($user);
+                $user = $em->getRepository('CSGOTalksiteBundle:User')->findOneBy(array('name' => $userInfoArray['nickname']));
+                $message->setUser($user);
 
-            $em->persist($message);
-            $em->flush();
+                $em->persist($message);
+                $em->flush();
 
-            return $this->redirectToRoute('csgo_talksite_show_thread',  array('id' => $id));
+                return $this->redirectToRoute('csgo_talksite_show_thread',  array('id' => $id));
+            }
         }
 
         $formArray = array();
@@ -265,10 +270,13 @@ class SiteController extends Controller
         return $this->render('CSGOTalksiteBundle:Site:add_message.html.twig', $array);
     }
 
-    public function errorConnectedAction(Request $request)
+    public function errorConnectedAction(Request $request, $error)
     {
+        $errorType = array();
+        $errorType['error'] = $error;
         $userInfoArray = self::menu($request);
+        $array = array_merge($userInfoArray, $errorType);
 
-        return $this->render('CSGOTalksiteBundle:Site:error.html.twig', $userInfoArray);
+        return $this->render('CSGOTalksiteBundle:Site:error.html.twig', $array);
     }
 }

@@ -23,5 +23,5 @@ csgo_talksite_add_message:
         id: \d+
 
 csgo_talksite_error_connected_status:
-    path:     /error
+    path:     /error/{error}
     defaults: { _controller: CSGOTalksiteBundle:Site:errorConnected }
